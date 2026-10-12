@@ -1,0 +1,28 @@
+
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: mypythonflaskapp-deployment
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: mypythonflaskapp
+
+  template:
+    metadata:
+      labels:
+        app: mypythonflaskapp
+
+    spec:
+      containers:
+        - name: mypythonflaskapp
+
+          image: saisathwika1126/docker_week8/mypythonflaskapp:v1
+
+          ports:
+            - containerPort: 5000
