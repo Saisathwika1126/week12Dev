@@ -9,6 +9,7 @@ import time
 # Fixture for setting up and tearing down the driver
 @pytest.fixture
 def setup_teardown():
+    # Exactly like your friend's setup (No headless arguments needed!)
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     yield driver
     driver.quit()
@@ -38,7 +39,7 @@ def test_empty_password(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
 
-    driver.find_element(By.NAME, "username").send_keys("Sathwika") # CHANGED: Usha -> Sathwika
+    driver.find_element(By.NAME, "username").send_keys("Sathwika")
     driver.find_element(By.NAME, "pwd").clear()
     driver.find_element(By.NAME, "sb").click()
 
@@ -51,7 +52,7 @@ def test_short_password(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
 
-    driver.find_element(By.NAME, "username").send_keys("Sathwika") # CHANGED: Usha -> Sathwika
+    driver.find_element(By.NAME, "username").send_keys("Sathwika")
     driver.find_element(By.NAME, "pwd").send_keys("abc1")
     driver.find_element(By.NAME, "sb").click()
 
@@ -64,17 +65,17 @@ def test_valid_input(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
 
-    driver.find_element(By.NAME, "username").send_keys("Sathwika") # CHANGED: Usha -> Sathwika
+    driver.find_element(By.NAME, "username").send_keys("Sathwika")
     driver.find_element(By.NAME, "pwd").send_keys("abc123")
     driver.find_element(By.NAME, "sb").click()
 
     # Wait for redirect
     time.sleep(2)
 
-    # Verify URL route redirection
+    # Verify URL
     current_url = driver.current_url
     assert "/submit" in current_url, f"Expected redirect to greeting.html, but got: {current_url}"
 
-    # Verify customized welcome greeting message
+    # Verify greeting message
     body_text = driver.find_element(By.TAG_NAME, "body").text
     assert "Hello, Sathwika! Welcome to the website" in body_text, f"Greeting not found or incorrect: {body_text}"
