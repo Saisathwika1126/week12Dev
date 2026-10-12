@@ -8,16 +8,16 @@ pipeline {
                 echo "Running Selenium Tests using pytest"
 
                 // Install Python dependencies
-                sh 'pip install -r requirements.txt'
+                sh 'python3 -m pip install -r requirements.txt'
 
-                // Start Flask application in background
-                sh 'start /B python app.py'
+                // FIXED: Removed the double 'sh sh' syntax error
+                sh 'python3 app.py &'
 
                 // Wait for Flask application to start
-                sh 'ping 127.0.0.1 -n 5 > nul'
+                sh 'sleep 5'
 
-                // Run Selenium tests
-                sh 'python -m pytest -v'
+                // FIXED: Standardized to python3 to prevent ModuleNotFoundError
+                sh 'python3 -m pytest -v'
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
                   sh 'docker login -u saisathwika1126 -p Sathwika@1126'
                 }
             }
-            
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 echo "Push Docker Image to Docker Hub"
