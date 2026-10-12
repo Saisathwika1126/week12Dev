@@ -9,13 +9,13 @@ pipeline {
                 // Clean and install requirements
                 sh 'python3 -m pip install -r requirements.txt'
 
-                // FIXED: Redirects background output to prevent Jenkins from hanging on Mac
-                sh 'python3 app.py > /dev/null 2>&1 &'
+                // FIXED: Injects environment variables to bind Flask properly and detaches the runner process context
+                sh 'export FLASK_RUN_HOST=0.0.0.0 && nohup python3 app.py > flask.log 2>&1 &'
 
-                // Wait for Flask application to start up safely
+                // Give the web server plenty of headroom to initialize (5 seconds)
                 sh 'sleep 5'
 
-                // Run your non-headless pytest suite
+                // Run your non-headless pytest verification suite
                 sh 'python3 -m pytest -v'
             }
         }
