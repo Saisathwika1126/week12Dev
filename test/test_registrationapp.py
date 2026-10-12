@@ -9,7 +9,6 @@ import time
 # Fixture for setting up and tearing down the driver
 @pytest.fixture
 def setup_teardown():
-    # Exactly like your friend's setup (No headless arguments needed!)
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     yield driver
     driver.quit()
@@ -60,7 +59,7 @@ def test_short_password(setup_teardown):
     alert_text = get_alert_text(driver)
     assert alert_text == "Password must be at least 6 characters long."
 
-# Test 4: Valid input verification
+
 def test_valid_input(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
