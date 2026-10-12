@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('form.html')
+    return render_template('register.html')
 
 
 @app.route('/submit', methods=['POST'])
@@ -13,7 +13,7 @@ def submit():
     username = request.form['username']
 
     return render_template(
-        'greeting.html',
+        'successful.html',
         name=username
     )
 
