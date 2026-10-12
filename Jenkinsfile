@@ -9,13 +9,13 @@ pipeline {
                 // Clean and install requirements
                 sh 'python3 -m pip install -r requirements.txt'
 
-                // FIXED: Injects environment variables to bind Flask properly and detaches the runner process context
-                sh 'export FLASK_RUN_HOST=0.0.0.0 && nohup python3 app.py > flask.log 2>&1 &'
+                // FIXED: Detaches process completely using nohup and log routing to stop pipeline hanging
+                sh 'nohup python3 app.py > flask.log 2>&1 &'
 
-                // Give the web server plenty of headroom to initialize (5 seconds)
+                // Give the detached Flask app server 5 seconds to wake up
                 sh 'sleep 5'
 
-                // Run your non-headless pytest verification suite
+                // Run pytest suite
                 sh 'python3 -m pytest -v'
             }
         }
