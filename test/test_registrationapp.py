@@ -38,7 +38,7 @@ def test_empty_password(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
 
-    driver.find_element(By.NAME, "username").send_keys("Usha")
+    driver.find_element(By.NAME, "username").send_keys("Sathwika") # CHANGED: Usha -> Sathwika
     driver.find_element(By.NAME, "pwd").clear()
     driver.find_element(By.NAME, "sb").click()
 
@@ -51,7 +51,7 @@ def test_short_password(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
 
-    driver.find_element(By.NAME, "username").send_keys("Usha")
+    driver.find_element(By.NAME, "username").send_keys("Sathwika") # CHANGED: Usha -> Sathwika
     driver.find_element(By.NAME, "pwd").send_keys("abc1")
     driver.find_element(By.NAME, "sb").click()
 
@@ -59,22 +59,22 @@ def test_short_password(setup_teardown):
     alert_text = get_alert_text(driver)
     assert alert_text == "Password must be at least 6 characters long."
 
-
+# Test 4: Valid input verification
 def test_valid_input(setup_teardown):
     driver = setup_teardown
     driver.get("http://127.0.0.1:5000/")
 
-    driver.find_element(By.NAME, "username").send_keys("Usha")
+    driver.find_element(By.NAME, "username").send_keys("Sathwika") # CHANGED: Usha -> Sathwika
     driver.find_element(By.NAME, "pwd").send_keys("abc123")
     driver.find_element(By.NAME, "sb").click()
 
     # Wait for redirect
     time.sleep(2)
 
-    # Verify URL
+    # Verify URL route redirection
     current_url = driver.current_url
     assert "/submit" in current_url, f"Expected redirect to greeting.html, but got: {current_url}"
 
-    # Verify greeting message
+    # Verify customized welcome greeting message
     body_text = driver.find_element(By.TAG_NAME, "body").text
     assert "Hello, Sathwika! Welcome to the website" in body_text, f"Greeting not found or incorrect: {body_text}"
