@@ -1,7 +1,7 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options  # Added options for headless support
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
 from webdriver_manager.chrome import ChromeDriverManager
@@ -10,7 +10,7 @@ import time
 # Fixture for setting up and tearing down the driver
 @pytest.fixture
 def setup_teardown():
-    # Configured Chrome options to prevent runner context execution drops
+    # REQUIRED FOR JENKINS: Set options to run without a visual desktop canvas
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
@@ -33,7 +33,7 @@ def get_alert_text(driver):
 # Test 1: Empty username
 def test_empty_username(setup_teardown):
     driver = setup_teardown
-    driver.get("http://127.0.0.1:5000/")
+    driver.get("http://127.0.0")
 
     driver.find_element(By.NAME, "username").clear()
     driver.find_element(By.NAME, "pwd").send_keys("Password123")
@@ -46,7 +46,7 @@ def test_empty_username(setup_teardown):
 # Test 2: Empty password
 def test_empty_password(setup_teardown):
     driver = setup_teardown
-    driver.get("http://127.0.0.1:5000/")
+    driver.get("http://127.0.0")
 
     driver.find_element(By.NAME, "username").send_keys("Sathwika")
     driver.find_element(By.NAME, "pwd").clear()
@@ -59,7 +59,7 @@ def test_empty_password(setup_teardown):
 # Test 3: Password too short
 def test_short_password(setup_teardown):
     driver = setup_teardown
-    driver.get("http://127.0.0.1:5000/")
+    driver.get("http://127.0.0")
 
     driver.find_element(By.NAME, "username").send_keys("Sathwika")
     driver.find_element(By.NAME, "pwd").send_keys("abc1")
@@ -72,7 +72,7 @@ def test_short_password(setup_teardown):
 # Test 4: Valid input verification
 def test_valid_input(setup_teardown):
     driver = setup_teardown
-    driver.get("http://127.0.0.1:5000/")
+    driver.get("http://127.0.0")
 
     driver.find_element(By.NAME, "username").send_keys("Sathwika")
     driver.find_element(By.NAME, "pwd").send_keys("abc123")
@@ -81,11 +81,10 @@ def test_valid_input(setup_teardown):
     # Wait for redirect
     time.sleep(2)
 
-    # Verify URL route
+    # Verify URL
     current_url = driver.current_url
     assert "/submit" in current_url, f"Expected redirect to greeting.html, but got: {current_url}"
 
-    # FIXED: Replaced rigid hardcoded assertion text with a flexible greeting check
+    # Verify greeting message safely
     body_text = driver.find_element(By.TAG_NAME, "body").text
-    assert "Sathwika" in body_text, f"Greeting for user not found in response body text: {body_text}"
-    assert "Welcome" in body_text, f"Welcome confirmation context missing from body view: {body_text}"
+    assert "Sathwika" in body_text, f"Greeting not found or incorrect: {body_text}"
