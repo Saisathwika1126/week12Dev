@@ -29,7 +29,7 @@ pipeline {
 
         stage('Docker Login') {
             steps {
-                sh 'docker login -u saisathwika1126 -p Sathwika@1126'
+                sh 'docker login -u saisathwika1126 -p dckr_pat_lhSODC_v6VSnLsVIJSbbEDlj7TU'
             }
         }
 
