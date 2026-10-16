@@ -36,8 +36,8 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 echo "Push Docker Image to Docker Hub"
-                sh "docker tag mypythonflaskapp:v1 saisathwika1126/docker_week8/mypythonflaskapp:v1"
-                sh "docker push saisathwika1126/docker_week8/mypythonflaskapp:v1"
+                sh "docker tag mypythonflaskapp:v1 saisathwika1126/docker_week8:mypythonflaskapp"
+                sh "docker push saisathwika1126/docker_week8:mypythonflaskapp"
             }
         }
 
