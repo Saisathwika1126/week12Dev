@@ -25,4 +25,4 @@ spec:
           image: saisathwika1126/docker_week8/mypythonflaskapp:v1
 
           ports:
-            - containerPort: 5000
+            - containerPort: 5001
